@@ -104,10 +104,7 @@ app.put('/collection/lesson/:id', (req, res, next) => {
 //search lessons
 app.get('/collection/lessons/search/:key', async (req, res, next) => {
 
-  
-  const query = {$text: {$search: req.params.key}}
-
-  db.collection('lessons').find(query).toArray((e, result) => {
+ db.collection('lessons').find({title: {$regex: new RegExp(req.params.key+'.*', 'i')}}).toArray((e, result) => { 
     if(e) return next(e)
 
     const rootUrl = req.protocol + '://' + req.get('host')+ '/public/';
@@ -120,7 +117,7 @@ app.get('/collection/lessons/search/:key', async (req, res, next) => {
       return lesson;
     });
 
-    res.send(result)
-})
+    res.send(result);
+  });
 });
 
