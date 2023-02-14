@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutoria - Learning made easy</title>
+
+    <!-- icon -->
+    <link rel="icon" href="/public/img/tutorio.svg" />
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/css/all.min.css" />
+    <link rel="stylesheet" href="/public/css/main.css" />
+   
+
+    <!-- JAVASCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div id="app">
+        <!-- HEADER -->
+        <header > 
+          <div class="container">
+            <div class="row justify-content-between align-items-center">
+              <div class="col-7 col-lg-2 col-md-2 order-1"> 
+              <h1 href="javascript:void(0)" class="text-white logo" v-on:click="showlesson = true"><img src="/public/img/tutorio.svg"> {{sitename}}</h1>
+              </div>
+              <div class="col-12 col-md-5 order-3 order-lg-2 order-md-2"> 
+                <div class="p-1 bg-light rounded rounded-pill shadow-sm">
+                  <div class="input-group">
+                    <input type="text" placeholder="What're you searching for?" v-model="filter.searchValue" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+                    <div class="input-group-append">
+                      <button id="button-addon1" type="button" disabled class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <div class="col-5 col-md-5 text-right order-2">
+                  <button type="button" class="cart-icon position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" fill="#fff"><path d="M11 44q-1.2 0-2.1-.9Q8 42.2 8 41V15q0-1.2.9-2.1.9-.9 2.1-.9h5.5v-.5q0-3.15 2.175-5.325Q20.85 4 24 4q3.15 0 5.325 2.175Q31.5 8.35 31.5 11.5v.5H37q1.2 0 2.1.9.9.9.9 2.1v26q0 1.2-.9 2.1-.9.9-2.1.9Zm0-3h26V15h-5.5v4.5q0 .65-.425 1.075Q30.65 21 30 21q-.65 0-1.075-.425-.425-.425-.425-1.075V15h-9v4.5q0 .65-.425 1.075Q18.65 21 18 21q-.65 0-1.075-.425-.425-.425-.425-1.075V15H11v26Zm8.5-29h9v-.5q0-1.9-1.3-3.2Q25.9 7 24 7q-1.9 0-3.2 1.3-1.3 1.3-1.3 3.2ZM11 41V15v26Z"/></svg> 
+                    <span class="position-absolute translate-middle badge rounded-pill bg-danger">
+                      {{cart.length}}
+                    </span>
+                  </button>
+                </div>
+            </div>
+          </div>
+        </header>
+        <!-- SHOW CART DRAWER -->
+        <div>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header d-flex align-content-between">
+                <h3 id="offcanvasRightLabel mb-4">Cart Items</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              
+              <div class="offcanvas-body">
+                    <div class="alert alert-info" v-if="cart.length == 0">Your cart is currently empty.</div>
+                    <div class="cart-items">
+                        <div v-for="item in cart" class="row py-3 cart-item">
+                            <div class="col-md-3">
+                                <img v-bind:src="item.img" class="w-100" />
+                            </div>
+                            <div class="col-md-7">
+                                <p>{{item.title}}</p>
+                                <span>Quantity: {{item.quantity}}</span>
+                                
+                                <p><strong>{{item.price.toLocaleString()}} {{storeCurrency}}</strong></p>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-sm btn-danger" v-on:click="deleteFromCart(item)"><i class="fa-solid fa-trash mr-3"></i></button>
+                            </div>
+                           
+                        </div>
+                    </div>
+              </div>
+              <div class="offcanvas-footer p-3 ">
+                <div class="d-grid gap-2">
+                  </b><span><b>Total (USD)</b></span>
+                  <h5><strong>{{order.total.toLocaleString()}} {{storeCurrency}}</strong></h5>
+                  <hr>
+                    <button :disabled="!cart.length" class="btn btn-primary btn-lg d-block" v-on:click="showCheckout()">CONTINUE TO CHECKOUT</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+         <div id="main" class="container py-5">
+            <!-- lesson TEMPLATE -->
+            
+            <template v-if="showlesson">
+              <div class="card filter-board">
+                <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Subjects</label>
+                          <select class="form-select" aria-label="Default select example" v-model="filter.subjectKey">
+                            <option value="all">All Subjects</option>
+                            <option value="designing">Designing</option>
+                            <option value="development">Development</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="business">Business</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Location</label>
+                          <select class="form-select" v-model="filter.locationKey" aria-label="Default select example">
+                            <option value="all">All Locations</option>
+                            <option value="Knowledge Park, Dubai">Knowledge Park, Dubai</option>
+                            <option value="City walk, Dubai">City walk, Dubai</option>
+                            <option value="Academic City, Dubai">Academic City, Dubai</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3 offset-lg-3 offset-sm-0">
+                          <div class="form-group">
+                            <label>Sort By</label>
+                            <select class="form-select" v-on:change="sortByVal($event)" aria-label="Default select example" v-model="filter.sortbyKey">
+                              <option value="default">Default</option>
+                              <option value="availablity">Space available</option>
+                              <option value="price-low-first">Price: low to high</option>
+                              <option value="price-high-first">Price: high to low</option>
+                              <option value="ascending">Alphabetically: A-Z</option>
+                              <option value="descending">Alphabetically: Z-A</option>
+                            </select>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <template v-for="lesson in filteredLessons">                
+                        
+                        <div class="col-md-3">
+                            <div class="lesson-card">
+                                <img v-bind:src="lesson.img" />
+                                <div class="lesson-text-wrap">
+                                    <span class="lesson-subject">{{lesson.subject}}</span>
+                                    <h3 class="lesson-title" v-text="lesson.title"></h3>
+                                    <span class="lesson-location"> {{lesson.location}}</span>
+                                    <p class="lesson-price">{{lesson.price.toLocaleString()}} <small>{{storeCurrency}}</small></p>
+                                    <span class="availableStock"><span>{{lesson.availableStock}}</span> Spaces available</span>
+                                      
+                                        <hr>
+                                        <div class="lesson-reviews">
+                                            <span v-for="n in lesson.rating" class="fa-solid fa-star"></span>
+                                            <span v-for="n in 5-lesson.rating" class="fa-regular fa-star"></span>
+                                            ({{lesson.rating}})
+                                        </div>
+                                    <button class="cart-btn" v-if="canAddToCart(lesson)" v-on:click="addToCart(lesson)">Add to Cart</button>
+                                    <button class="cart-btn" :disabled="true" v-if="!canAddToCart(lesson)" v-on:click="addToCart(lesson)">out of space</button>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </template>
+
+                    <!-- IF LESSONS NOT FOUND -->
+                    <template v-if="!filteredLessons.length">
+                      <div class="not-found">
+                      <i class="fa-solid fa-triangle-exclamation"></i>
+                      <h1>NOT FOUND</h1>
+                      <p>We can't find the product that you are looking for</p>
+                      <button type="button" v-on:click="clearFliters()" class="btn btn-primary">Clear Filters</button>
+                      </div>
+                    </template>
+                </div>
+            </template>
+            <!-- CHECKOUT TEMPLATE -->
+            <template v-else>
+                <!-- CHECKOUT FORM -->
+                <div v-if="!orderState" class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="checkout-form">
+                            <h2>Checkout</h2>
+                            <hr class="mb-4">
+                            <form class="needs-validation" novalidate="">
+                                <div class="row">
+                                  <div class="col-md-12 mb-3">
+                                    <label for="fullname">Full name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="fullname" placeholder="John" v-model="order.name" v-on:keypress="checkInputField($event)" autocomplete="off">
+                                   </div>
+
+                                  <div class="col-md-6 mb-3">
+                                    <label for="email">Email <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" v-model="order.email" autocomplete="off">
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="phone">Phone <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="phone" placeholder="05xxxxxxxx" v-model="order.phone" v-on:keypress="checkInputField($event)" autocomplete="off">
+                                  </div>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="address">Address <span class="text-danger">*</span></label>
+                                  <input type="text" class="form-control" id="address" placeholder="1234 Main St" v-model="order.address">
+                                </div>
+
+                          
+                                <button :disabled="canPlaceOrder" v-on:click="submitOrder()" class="btn btn-primary btn-lg text-right mt-4" type="button">Place Order</button>
+                              </form>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <h2>Invoice</h2>
+                        <hr class="mb-4">
+                        <ul class="list-group mb-3">
+                          <li v-for="item in cart" class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                              <p class="my-0">{{item.title}}</p>
+                              <small class="text-muted">Quantity: {{item.quantity}}</small>
+                            </div>
+                            <span class="text-muted">{{item.price.toLocaleString()}} {{storeCurrency}}</span>
+                              <div><button class="btn btn-sm btn-danger" v-on:click="deleteFromCart(item)"><i class="fa-solid fa-trash mr-3"></i></button></div>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between">
+                            <span><b>Total (USD)</b></span>
+                            <strong>{{order.total.toLocaleString()}} {{storeCurrency}}</strong>
+                          </li>
+                        </ul>
+                      </div>
+                </div>
+                <!-- ORDER CONFIRMED -->
+                <div v-if="orderState">
+                    <div class="order-confirmed">
+                        <img src="./img/complete.gif" height="150px" />
+                        <h1>Order Received</h1>
+                        <p>You will receive a confirmation email shortly</p>
+                        <button type="button" v-on:click="orderState = false, showlesson = true" class="btn btn-primary">Back to Home</button>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        
+    </div>
+    <script>
+
+
+        let webstore = new Vue ({
+            el: '#app',
+            data: {
+                sitename: 'Tutorio',
+                showlesson: true,
+                lessons: [],
+                storeCurrency: 'AED',
+                filter:{
+                  sortbyKey: 'default',
+                  locationKey: 'all',
+                  subjectKey: 'all',
+                  searchValue: '',
+                },
+                cart:[],
+                orderState: false,
+                order:{
+                    name: '',
+                    email: '',
+                    phone: '',
+                    address: '',
+                    item: [],
+                    total: 0,
+                },
+            },
+            methods:{
+                    getLessons(){
+                        //fetch lesson from database
+                        fetch('http://tutorio.eu-west-2.elasticbeanstalk.com/collection/lessons').
+                        then(response => response.json()).then(data => {
+                            this.lessons = data;
+                        });
+                    },
+                    searchLessons(key){
+                        fetch('http://tutorio.eu-west-2.elasticbeanstalk.com/collection/lessons/search/'+key).
+                        then(response => response.json()).then(data => {
+                            this.lessons = data;
+                        });
+                    },
+                    updateLessonsAvailableStock(items){
+
+                      items.forEach(item => {
+
+                        let lesson = this.lessons.find(function(lesson){
+                            if(lesson._id === item._id){
+                                return lesson;
+                            }
+                        });
+
+                        fetch('http://tutorio.eu-west-2.elasticbeanstalk.com/collection/lesson/'+item._id, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                availableStock: (lesson.availableStock+ item.quantity - item.quantity )
+                            })
+                        }).then(response => response.json()).then(data => {
+                            console.log(data);
+                        });
+                      });
+
+                       
+                    },
+                    addToCart: function(lesson){
+                          lesson.availableStock--;
+                          let newItem = this.cart.filter(function(item){
+                            console.log('check item: '+item._id);
+                            if(item._id === lesson._id){
+                                return item.quantity++;
+                            }
+                          });
+
+                          if(!(newItem.length)){
+                            lesson.quantity = 1;
+                            this.cart.push(lesson);
+                          }
+                          this.cartTotal();
+                    },
+                    deleteFromCart: function(lesson){
+
+                        let obj = this.filteredLessons.find(item => item._id === lesson._id);
+                        obj.availableStock += lesson.quantity;
+
+                        let item = this.cart.indexOf(lesson);
+                        this.cart.splice(item,1);
+                        this.cartTotal();
+                    },
+                    submitOrder(){
+                      
+                      let orderItems = this.cart.map(function(item){
+                        return {
+                          _id: item._id,
+                          title: item.title,
+                          price: item.price,
+                          quantity: item.quantity
+                        }
+                      });
+
+                      this.order.item = orderItems;
+
+                      fetch('http://tutorio.eu-west-2.elasticbeanstalk.com/collection/orders/create', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(this.order)
+                      }).then(response => response.json()).then(data => {
+
+                        this.updateLessonsAvailableStock(orderItems);
+                        this.orderState = true;
+                        this.cart = [];
+                        this.order = {
+                          name: '',
+                          email: '',
+                          phone: '',
+                          address: '',
+                          item: [],
+                          total: 0,
+                        };
+                        console.log(data);
+                      });
+
+                    },
+                    showCheckout: function(){
+
+                         this.showlesson  = false;
+                         let myOffcanvas = document.getElementById('offcanvasRight')
+                         let bsOffcanvas = bootstrap.Offcanvas.getInstance(myOffcanvas);
+                         bsOffcanvas.hide();
+                    },
+                    canAddToCart: function(lesson){
+                      return lesson.availableStock > 0;
+                    },
+                    cartItemCount(lesson){
+                      let count = 0;
+                      for(let i; i < this.cart.length; i++){
+                          if(this.cart[i]._id === lesson._id){
+                             count++;
+                          }
+                      }
+                      return count;
+                    },
+                    sortByVal:function($event) { //sorting
+                       let tempLessons = this.filteredLessons;
+
+
+                        if(this.filter.sortbyKey === 'default'){
+                          this.lessons.sort((l1,l2) => {
+                                if (l1._id < l2._id){
+                                      return -1;}
+                                
+                                if (l1._id > l2._id){
+                                      return 1;}
+                                    
+                                    return 0;
+                              });
+                        }
+
+                        if(this.filter.sortbyKey  === 'availablity'){
+
+                              this.lessons.sort((l1,l2) => {
+                                if (l1.availableStock > l2.availableStock){
+                                      return -1;}
+                                
+                                if (l1.availableStock < l2.availableStock){
+                                      return 1;}
+                                    
+                                    return 0;
+                              });
+                        }
+                        if(this.filter.sortbyKey === 'price-low-first'){
+
+                                this.lessons.sort((l1,l2) => {
+                                  if (l1.price < l2.price){
+                                        return -1;}
+                                  
+                                  if (l1.price > l2.price){
+                                        return 1;}
+                                      
+                                      return 0;
+                                });
+                          }
+                          if(this.filter.sortbyKey  === 'price-high-first'){
+
+                                this.lessons.sort((l1,l2) => {
+                                  if (l1.price > l2.price){
+                                        return -1;}
+                                  
+                                  if (l1.price < l2.price){
+                                        return 1;}
+                                      
+                                      return 0;
+                                });
+                          }
+                          if(this.filter.sortbyKey  === 'ascending'){
+                              this.lessons.sort((l1,l2) => {
+                                if (l1.title < l2.title){
+                                      return -1;}
+                                
+                                if (l1.title > l2.title){
+                                      return 1;}
+                                    
+                                    return 0;
+                              });
+                          }
+                          if(this.filter.sortbyKey === 'descending'){
+                              this.lessons.sort((l1,l2) => {
+                                if (l1.title > l2.title){
+                                      return -1;}
+                                
+                                if (l1.title < l2.title){
+                                      return 1;}
+                                    
+                                    return 0;
+                              });
+                            }
+                    },
+                    clearFliters: function(){
+                     
+                      this.filter.sortbyKey = 'default';
+                      this.filter.locationKey = 'all';
+                      this.filter.subjectKey = 'all';
+                      this.filter.searchValue = '';
+                    },
+                    checkInputField($event){
+
+                            //name validation (ReGex)
+                            if($event.target.id === 'fullname') {
+                                let char = String.fromCharCode($event.keyCode); // Get the character
+                                if (/^[A-Za-z]+$/.test(char)) { /// Match with regex
+                                    return true;
+                                }
+                                else {
+                                    $event.preventDefault();
+                                }
+                            }
+                            //phone validation (ReGex)
+                            if($event.target.id === 'phone') {
+                                let char = String.fromCharCode($event.keyCode); // Get the character
+                                if (/^[0-9]+$/.test(char)) { // Match with regex
+                                    return true;
+                                }
+                                else {
+                                    $event.preventDefault();
+                                }
+                            }
+                    },
+                    cartTotal: function(){
+
+                        let  total = 0;
+                        this.cart.forEach(function(item){
+                            total += item.price * item.quantity;
+                        })
+
+                        if(total === 0){
+                            this.showlesson = true;
+                            this.orderState = false;
+                        }
+                        this.order.total = total;
+                  }
+
+            },
+            
+            computed:{
+              filteredLessons(){
+                let tempLessons = this.lessons
+
+                  //search term
+                  // if(this.filter.searchValue !== '' && this.filter.searchValue){
+                  //   tempLessons = tempLessons.filter((lesson) => {
+                  //     return lesson.title.toLowerCase().includes(this.filter.searchValue.toLowerCase()) || lesson.location.toLowerCase().includes(this.filter.searchValue.toLowerCase())
+                  //   })
+                  // }
+
+                  //location
+                  if (this.filter.locationKey !== 'all'){
+                    tempLessons = tempLessons.filter((item) => {
+                      return (item.location === this.filter.locationKey);
+                    })
+                  }
+
+                  //subject
+                  if (this.filter.subjectKey != 'all'){
+                    tempLessons = tempLessons.filter((item) => {
+                      return (item.subject == this.filter.subjectKey);
+                    })
+                  }
+
+                  return tempLessons;
+                },
+              canPlaceOrder: function(){ //enable place order button if input fields has data
+
+                   if(this.order.name && this.order.email && this.order.phone && this.order.address){
+                       return false;
+                   }
+                   else {
+                       return true;
+                   }
+                },
+            },
+            mounted(){
+              this.getLessons();
+            },
+            watch: {
+              'filter.searchValue': function (newVal, oldVal) {
+                if(newVal){
+                  this.searchLessons(newVal)
+                }
+                else{
+                  this.getLessons();
+                }
+              },
+            }
+
+        });
+    </script>
+</body>
+</html>

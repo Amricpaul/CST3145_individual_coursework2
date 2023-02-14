@@ -1,0 +1,250 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+header {
+    padding: 15px 50px;
+    background-color: rgb(8, 0, 33);
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 999;
+}
+#main{
+    margin-top: 100px;
+}
+
+header .logo img{
+    margin-right: 15px;
+    width: 37px;
+}
+.text-right{
+    text-align: right;
+}
+header .logo {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin: 0px;
+    font-size: 27px;
+    font-weight: 800;
+}
+.lesson-card {
+    background-color: #ededed;
+    border-radius: 15px;
+  
+    position: relative;
+    margin-bottom: 30px;
+    border:1px solid #ededed;
+}
+.lesson-card img {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    width: 100%;
+}
+
+.lesson-card .lesson-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0px;
+}
+
+.lesson-card .lesson-description {
+    font-size: 12px;
+}
+
+.lesson-card .lesson-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ff6f00;
+}
+.lesson-card .lesson-reviews{
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.lesson-card .lesson-price small {
+    font-size: 12px;
+}
+
+button.cart-btn {
+    background: transparent;
+    border: 2px solid #ff6f00;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ff6f00;
+    box-shadow: 1px 1px 6px 0px #0000002e;
+}
+button.cart-btn:hover {
+    background: #ff6f00;
+    color: white;
+    
+}
+.form-control:focus {
+    box-shadow: none;
+  }
+  .input-group{
+    padding-left: 20px;
+  }
+
+  .form-control::placeholder {
+    font-size: 0.95rem;
+    color: #aaa;
+    font-style: italic;
+  }
+
+button.cart-icon {
+    background: transparent;
+    color: white;
+    padding: 5px;
+    border: none;
+}
+
+button.cart-icon .badge {
+    bottom: -7px;
+    right: -7px;
+    top: auto;
+}
+
+.cart-item p {
+    font-size: 14px;
+    margin: 0px;
+}
+.cart-item{
+    border-bottom: 1px solid #ededed;
+}
+
+.cart-item span {
+    font-size: 12px;
+}
+button.btn.btn-primary.btn-lg.d-block {
+    font-size: 16px;
+    line-height: 35px;
+    border-radius: 100px;
+}
+
+.lesson-text-wrap{
+    padding: 30px;
+    position: relative;
+}
+.availableStock {
+    font-size: 14px;
+}
+.availableStock i {
+    margin-right: 7px;
+}
+.lesson-location {
+    font-size: 13px;
+}
+button.cart-btn[disabled] {
+    background-color: #f7c39b;
+    filter: grayscale(1);
+}
+hr{
+    margin-top: 0.2rem;
+    margin-bottom:1rem;
+}
+.card.filter-board {
+    border-radius: 20px;
+    margin-bottom: 40px;
+    background-color: #eee;
+    border: none;
+}
+.filter-board label {
+    font-size: 12px;
+    margin-left: 10px;
+    margin-bottom: 7px;
+}
+.filter-board .card-body{
+    padding: 7px 20px 25px 20px;
+}
+.form-select {
+    border: none;
+    border-radius: 15px;
+    line-height: 40px;
+}
+.lesson-subject {
+    position: absolute;
+    top: -15px;
+    background: #ededed;
+    color: black;
+    padding: 5px 15px;
+    font-size: 14px;
+    box-shadow: 0px 4px 7px #00000021;
+    border-radius: 10px;
+    text-transform: capitalize;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #040011;
+    border-color: #040011;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0e0235;
+    border-color: #0e0235;
+}
+
+.not-found i{
+    font-size: 75px;
+    opacity: 0.3;
+}
+
+.not-found, .order-confirmed {
+    text-align: center;
+    padding: 30px;
+}
+
+
+.not-found h1, .order-confirmed h1 {
+    font-size: 45px;
+    font-weight: 300;
+    margin-top: 20px;
+}
+
+.not-found p, .order-confirmed p{
+    font-size: 24px;
+}
+.list-group li {
+    background-color: #eee;
+}
+button#button-addon1 i {
+    font-size: 22px;
+    color: #080021;
+}
+.btn-primary{
+    border-radius: 50px;
+    font-size: 14px;
+    padding:15px 30px;
+}
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: #000000;
+    border-color: #000000;
+    opacity: 0.8;
+}
+.btn-primary[disabled] {
+    cursor: not-allowed;
+    pointer-events: inherit;
+}
+ul.list-group p {
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+@media only screen and (max-width: 768px) {
+    header {
+        padding: 15px 15px;
+        background-color: rgb(8, 0, 33);
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        z-index: 999;
+    }
+  }

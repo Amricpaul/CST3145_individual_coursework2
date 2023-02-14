@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 // //static files middleware
 app.use('/public',(req, res, next) => {
    
-    const filePath = path.join(__dirname, "dist", req.url);
+    const filePath = path.join(__dirname, "public", req.url);
     console.log(filePath);
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
@@ -50,8 +50,11 @@ app.use('/public',(req, res, next) => {
       }
     });
 });
-app.use('/public', express.static(path.join(__dirname, 'dist')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
   
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Collection Param
 // app.param('collectionName', (req, res, next, collectionName) => {
